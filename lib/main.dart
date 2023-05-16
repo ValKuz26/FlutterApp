@@ -8,18 +8,48 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
+    Color bgColor = Colors.white;
+    Color bgColor2 = Colors.black;
 
-    Widget buttonSection = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildButtonColumn(color, Icons.call, 'CALL'),
-        _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-        _buildButtonColumn(color, Icons.share, 'SHARE'),
-      ],
+    Widget circleWithNumber = Container(
+      decoration: BoxDecoration(
+        color:bgColor2.withOpacity(0.8),
+        shape: BoxShape.circle,
+      ),
+          padding: const EdgeInsets.only(right: 32, top: 32),
+      margin:const EdgeInsets.only(top:32, right:32),
+          child: const Text(
+            '        #0',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,color:Colors.white,
+            ),
+          ),
+    );
+   Widget whiteBox = Container(
+      color: bgColor.withOpacity(0.5),
+      alignment: Alignment.topLeft,
+      margin:const EdgeInsets.only(top:32, right:32, left : 230),
+      child:  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButtonColumn(color = Colors.blue, Icons.call, 'CALL'),
+          _buildButtonColumn(color = Colors.green, Icons.near_me, 'ROUTE'),
+          _buildButtonColumn(color = Colors.black, Icons.share, 'SHARE'),
+        ],
+      ),
     );
 
     Widget titleSection = Container(
-      padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: bgColor2.withOpacity(0.8),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0)
+          ),
+        ),
+      height: 80,
+      margin: const EdgeInsets.only(right:32, left: 32,top:160,bottom: 0.00),
+      padding: const EdgeInsets.only(top:15, bottom:15,left:30,right:30),
       child: Row(
         children: [
           Expanded(
@@ -33,8 +63,8 @@ class MyApp extends StatelessWidget {
                   child: const Text(
                     'Oeschinen Lake Campground',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                      fontWeight: FontWeight.bold,color:Colors.white,
+                     ),
                   ),
                 ),
                 Text(
@@ -51,7 +81,12 @@ class MyApp extends StatelessWidget {
             Icons.star,
             color: Colors.red[500],
           ),
-          const Text('41'),
+          const Text(
+            '41',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          ),
         ],
       ),
     );
@@ -69,25 +104,26 @@ class MyApp extends StatelessWidget {
       ),
     );
 
+    Widget mainSection = Stack(
+        children: [
+          circleWithNumber,
+          _buildMainLayout(circleWithNumber, titleSection, whiteBox),
+          _buildMainLayout(circleWithNumber, titleSection, whiteBox),
+          _buildMainLayout(circleWithNumber, titleSection, whiteBox),
+        ]
+    );
+
     return MaterialApp(
       title: 'Flutter layout demo',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Flutter layout demo'),
+         // title: const Text('Flutter layout demo'),
         ),
         body: ListView(
           children: [
-            Image.asset(
-              'images/lake.jpg',
-              width: 600,
-              height: 240,
-              fit: BoxFit.cover,
-            ),
-            titleSection,
-            buttonSection,
-            textSection,
+            _buildMainLayout(circleWithNumber, titleSection, whiteBox),
           ]
-        )
+  )
       ),
     );
   }
@@ -110,6 +146,22 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Stack _buildMainLayout(Widget circleWithNumber,Widget titleSection, Widget whiteBox){
+    return Stack(
+        children: [
+          Image.asset(
+            'images/lake.jpg',
+            width: 600,
+            height: 240,
+            fit: BoxFit.cover,
+          ),
+          circleWithNumber,
+          titleSection,
+          whiteBox,
+        ]
     );
   }
 }
