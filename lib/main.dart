@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,24 +12,10 @@ class MyApp extends StatelessWidget {
     Color bgColor = Colors.white;
     Color bgColor2 = Colors.black;
 
-    Widget circleWithNumber = Container(
-      decoration: BoxDecoration(
-        color:bgColor2.withOpacity(0.8),
-        shape: BoxShape.circle,
-      ),
-          padding: const EdgeInsets.only(right: 32, top: 32),
-      margin:const EdgeInsets.only(top:32, right:32),
-          child: const Text(
-            '        #0',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,color:Colors.white,
-            ),
-          ),
-    );
+
    Widget whiteBox = Container(
       color: bgColor.withOpacity(0.5),
-      alignment: Alignment.topLeft,
-      margin:const EdgeInsets.only(top:32, right:32, left : 230),
+      margin:const EdgeInsets.only(top:32, right:32, left : 200),
       child:  Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -104,26 +91,32 @@ class MyApp extends StatelessWidget {
       ),
     );
 
-    Widget mainSection = Stack(
+   /* Widget mainSection = Stack(
         children: [
-          circleWithNumber,
           _buildMainLayout(circleWithNumber, titleSection, whiteBox),
           _buildMainLayout(circleWithNumber, titleSection, whiteBox),
           _buildMainLayout(circleWithNumber, titleSection, whiteBox),
         ]
-    );
+    );*/
 
     return MaterialApp(
       title: 'Flutter layout demo',
       home: Scaffold(
         appBar: AppBar(
-         // title: const Text('Flutter layout demo'),
+          title: const Text('Flutter layout demo'),
         ),
-        body: ListView(
-          children: [
-            _buildMainLayout(circleWithNumber, titleSection, whiteBox),
-          ]
-  )
+        body: ListView.builder(
+          padding: const EdgeInsets.only(left:8.0,right:8.0),
+          itemCount: 8,
+          itemBuilder: (context, index)
+          {
+            return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:
+                _buildMainLayout(titleSection, whiteBox, bgColor2, index)
+            );
+          },
+       ),
       ),
     );
   }
@@ -149,7 +142,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Stack _buildMainLayout(Widget circleWithNumber,Widget titleSection, Widget whiteBox){
+  Stack _buildMainLayout(Widget titleSection, Widget whiteBox, Color bgColor, int index){
     return Stack(
         children: [
           Image.asset(
@@ -158,10 +151,34 @@ class MyApp extends StatelessWidget {
             height: 240,
             fit: BoxFit.cover,
           ),
-          circleWithNumber,
+          _buildCircleWithNumber(bgColor: bgColor, index: index),
           titleSection,
           whiteBox,
         ]
+    );
+  }
+
+  Container _buildCircleWithNumber({
+    Color bgColor = Colors.black,
+    int index = 0
+  }){
+    var i = index.toString();
+    String text = '#$i.';
+    return Container(
+      decoration: BoxDecoration(
+        color:bgColor.withOpacity(0.8),
+        shape: BoxShape.circle,
+      ),
+      width:62,
+      height:62,
+      alignment: Alignment.center,
+      margin:const EdgeInsets.only(top:32,left:32),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,color:Colors.white,
+        ),
+      ),
     );
   }
 }
