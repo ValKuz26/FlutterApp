@@ -1,4 +1,20 @@
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class NewPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('New Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+            onPressed: (){
+              print('Button pressed');
+            },
+            child: Text('Press me.'),
+        ),
+      ),
+    );
+  }
+}

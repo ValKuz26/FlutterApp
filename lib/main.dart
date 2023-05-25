@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+//import 'package:flutter/rendering.dart';
 
-void main() => runApp(const MyApp());
+import 'about.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,7 @@ class MyApp extends StatelessWidget {
     Color bgColor = Colors.white;
     Color bgColor2 = Colors.black;
 
-
-   Widget whiteBox = Container(
+    Widget whiteBox = Container(
       color: bgColor.withOpacity(0.5),
       margin:const EdgeInsets.only(top:32, right:32, left : 200),
       child:  Row(
@@ -27,16 +27,17 @@ class MyApp extends StatelessWidget {
     );
 
     Widget titleSection = Container(
-        decoration: BoxDecoration(
-          color: bgColor2.withOpacity(0.8),
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0)
-          ),
+      decoration: BoxDecoration(
+        color: bgColor2.withOpacity(0.8),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0)
         ),
+      ),
       height: 80,
       margin: const EdgeInsets.only(right:32, left: 32,top:160,bottom: 0.00),
-      padding: const EdgeInsets.only(top:15, bottom:15,left:30,right:30),
+      padding: const EdgeInsets.only(top:15,left:30,right:30),
+
       child: Row(
         children: [
           Expanded(
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
                     'Oeschinen Lake Campground',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,color:Colors.white,
-                     ),
+                    ),
                   ),
                 ),
                 Text(
@@ -70,34 +71,13 @@ class MyApp extends StatelessWidget {
           ),
           const Text(
             '41',
-          style: TextStyle(
-            color: Colors.white,
-          ),
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ],
       ),
     );
-
-    Widget textSection = const Padding(
-      padding: EdgeInsets.all(32),
-      child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-            'Alps. Situated 1,578 meters above sea level, it is one of the '
-            'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-            'half-hour walk through pastures and pine forest, leads you to the '
-            'lake, which warms to 20 degrees Celsius in the summer. Activities '
-            'enjoyed here include rowing, and riding the summer toboggan run.',
-        softWrap: true,
-      ),
-    );
-
-   /* Widget mainSection = Stack(
-        children: [
-          _buildMainLayout(circleWithNumber, titleSection, whiteBox),
-          _buildMainLayout(circleWithNumber, titleSection, whiteBox),
-          _buildMainLayout(circleWithNumber, titleSection, whiteBox),
-        ]
-    );*/
 
     return MaterialApp(
       title: 'Flutter layout demo',
@@ -106,20 +86,20 @@ class MyApp extends StatelessWidget {
           title: const Text('Flutter layout demo'),
         ),
         body: ListView.builder(
-          padding: const EdgeInsets.only(left:8.0,right:8.0),
-          itemCount: 8,
-          itemBuilder: (context, index)
-          {
-            return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:
-                _buildMainLayout(titleSection, whiteBox, bgColor2, index)
-            );
-          },
-       ),
-      ),
+              //padding: const EdgeInsets.only(left:8.0,right:8.0),
+              itemCount: 11,
+              itemBuild
+            er: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _buildMainLayout(titleSection, whiteBox, bgColor2, index, context)
+                );
+              },
+            ),
+        ),
     );
   }
+
 
   Column _buildButtonColumn(Color color, IconData icon, String label) {
     return Column(
@@ -142,19 +122,25 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Stack _buildMainLayout(Widget titleSection, Widget whiteBox, Color bgColor, int index){
-    return Stack(
-        children: [
-          Image.asset(
-            'images/lake.jpg',
-            width: 600,
-            height: 240,
-            fit: BoxFit.cover,
-          ),
-          _buildCircleWithNumber(bgColor: bgColor, index: index),
-          titleSection,
-          whiteBox,
-        ]
+  ElevatedButton _buildMainLayout(Widget titleSection, Widget whiteBox, Color bgColor, int index, BuildContext context){
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
+      child: Stack(
+          children: [
+            Image.asset(
+              'images/lake.jpg',
+              width: 600,
+              height: 240,
+              fit: BoxFit.cover,
+            ),
+            _buildCircleWithNumber(bgColor: bgColor, index: index),
+            titleSection,
+            whiteBox,
+          ]
+      ),
+      onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => NewPage()));
+      }
     );
   }
 
@@ -175,10 +161,22 @@ class MyApp extends StatelessWidget {
       margin:const EdgeInsets.only(top:32,left:32),
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,color:Colors.white,
         ),
       ),
     );
   }
+}
+
+class infoaboutMain{
+  final String title;
+  final int numberOfCard;
+  final String imageUrl;
+
+  infoaboutMain({
+    required this.title,
+    required this.numberOfCard,
+    this.imageUrl = 'images/lake.jpg',
+  });
 }
